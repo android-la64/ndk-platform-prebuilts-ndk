@@ -313,62 +313,64 @@ typedef struct ucontext {
   struct _libc_fpstate __fpregs_mem;
 } ucontext_t;
 
-#elif __riscv_xlen == 64
+#elif defined(__loongarch__)
 
-#define NGREG 32
+#define LARCH_NGREG 32
 
-typedef unsigned long long greg_t;
-typedef greg_t gregset_t[NGREG];
+#if defined(__USE_GNU)
 
-typedef unsigned long int __riscv_mc_gp_state[32];
+enum {
+  LARCH_REG_RA = 1,
+#define LARCH_REG_RA LARCH_REG_RA
+  LARCH_REG_SP = 3,
+#define LARCH_REG_SP LARCH_REG_SP
+  LARCH_REG_A0 = 4,
+#define LARCH_REG_A0 LARCH_REG_A0
+  LARCH_REG_S0 = 23,
+#define LARCH_REG_S0 LARCH_REG_S0
+  LARCH_REG_S1 = 24,
+#define LARCH_REG_S1 LARCH_REG_S1
+  LARCH_REG_S2 = 25,
+#define LARCH_REG_S2 LARCH_REG_S2
+  LARCH_REG_NARGS = 8,
+#define LARCH_REG_NARGS LARCH_REG_NARGS
+};
 
-struct __riscv_mc_f_ext_state
-  {
-    unsigned int __f[32];
-    unsigned int __fcsr;
-  };
+#endif // defined(__USE_GNU)
 
-struct __riscv_mc_d_ext_state
-  {
-    unsigned long long int __f[32];
-    unsigned int __fcsr;
-  };
+typedef unsigned long int greg_t;
+/* Container for all general registers.  */
+typedef greg_t gregset_t[32];
 
-struct __riscv_mc_q_ext_state
-  {
-    unsigned long long int __f[64] __attribute__ ((__aligned__ (16)));
-    unsigned int __fcsr;
-    /* Reserved for expansion of sigcontext structure.  Currently zeroed
-       upon signal, and must be zero upon sigreturn.  */
-    unsigned int __glibc_reserved[3];
-  };
-
-union __riscv_mc_fp_state
-  {
-    struct __riscv_mc_f_ext_state __f;
-    struct __riscv_mc_d_ext_state __d;
-    struct __riscv_mc_q_ext_state __q;
-  };
-
-typedef union __riscv_mc_fp_state* fpregset_t;
-
-typedef struct mcontext_t
-  {
-    __riscv_mc_gp_state __gregs;
-    union  __riscv_mc_fp_state __fpregs;
-  } mcontext_t;
+typedef struct
+{
+  unsigned long long __pc;
+  unsigned long long __gregs[32];
+  unsigned int __flags;
+  unsigned long long __extcontext[0] __attribute__((__aligned__(16)));
+} mcontext_t;
 
 /* Userlevel context.  */
 typedef struct ucontext_t
-  {
-    unsigned long int  __uc_flags;
-    struct ucontext_t  *uc_link;
-    stack_t            uc_stack;
-    sigset_t           uc_sigmask;
-    sigset64_t          uc_sigmask64;
-    unsigned char      __reserved[1024 / 8 - sizeof (sigset_t)];
-    mcontext_t         uc_mcontext;
-  } ucontext_t;
+{
+  unsigned long int __uc_flags;
+  struct ucontext *uc_link;
+  stack_t uc_stack;
+  union {
+    sigset_t uc_sigmask;
+    sigset64_t uc_sigmask64;
+  };
+  /* The kernel adds extra padding after uc_sigmask to match glibc sigset_t on LoongArch64. */
+  char __padding[128 - sizeof(sigset_t)];
+  mcontext_t uc_mcontext;
+} ucontext_t;
+
+// best use the following
+// #include <asm/sigcontext.h>
+// typedef struct sigcontext mcontext_t;
+//
+// #include <asm/ucontext.h>
+// typedef struct ucontext ucontext_t;
 
 #endif
 
