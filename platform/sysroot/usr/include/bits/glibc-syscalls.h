@@ -162,9 +162,6 @@
 #if defined(__NR_epoll_pwait)
   #define SYS_epoll_pwait __NR_epoll_pwait
 #endif
-#if defined(__NR_epoll_pwait2)
-  #define SYS_epoll_pwait2 __NR_epoll_pwait2
-#endif
 #if defined(__NR_epoll_wait)
   #define SYS_epoll_wait __NR_epoll_wait
 #endif
@@ -507,15 +504,6 @@
 #if defined(__NR_kill)
   #define SYS_kill __NR_kill
 #endif
-#if defined(__NR_landlock_add_rule)
-  #define SYS_landlock_add_rule __NR_landlock_add_rule
-#endif
-#if defined(__NR_landlock_create_ruleset)
-  #define SYS_landlock_create_ruleset __NR_landlock_create_ruleset
-#endif
-#if defined(__NR_landlock_restrict_self)
-  #define SYS_landlock_restrict_self __NR_landlock_restrict_self
-#endif
 #if defined(__NR_lchown)
   #define SYS_lchown __NR_lchown
 #endif
@@ -576,9 +564,6 @@
 #if defined(__NR_memfd_create)
   #define SYS_memfd_create __NR_memfd_create
 #endif
-#if defined(__NR_memfd_secret)
-  #define SYS_memfd_secret __NR_memfd_secret
-#endif
 #if defined(__NR_migrate_pages)
   #define SYS_migrate_pages __NR_migrate_pages
 #endif
@@ -617,9 +602,6 @@
 #endif
 #if defined(__NR_mount)
   #define SYS_mount __NR_mount
-#endif
-#if defined(__NR_mount_setattr)
-  #define SYS_mount_setattr __NR_mount_setattr
 #endif
 #if defined(__NR_move_mount)
   #define SYS_move_mount __NR_move_mount
@@ -801,6 +783,9 @@
 #if defined(__NR_process_madvise)
   #define SYS_process_madvise __NR_process_madvise
 #endif
+#if defined(__NR_process_mrelease)
+  #define SYS_process_mrelease __NR_process_mrelease
+#endif
 #if defined(__NR_process_vm_readv)
   #define SYS_process_vm_readv __NR_process_vm_readv
 #endif
@@ -839,9 +824,6 @@
 #endif
 #if defined(__NR_quotactl)
   #define SYS_quotactl __NR_quotactl
-#endif
-#if defined(__NR_quotactl_fd)
-  #define SYS_quotactl_fd __NR_quotactl_fd
 #endif
 #if defined(__NR_read)
   #define SYS_read __NR_read
@@ -899,9 +881,6 @@
 #endif
 #if defined(__NR_restart_syscall)
   #define SYS_restart_syscall __NR_restart_syscall
-#endif
-#if defined(__NR_riscv_flush_icache)
-  #define SYS_riscv_flush_icache __NR_riscv_flush_icache
 #endif
 #if defined(__NR_rmdir)
   #define SYS_rmdir __NR_rmdir

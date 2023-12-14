@@ -44,14 +44,14 @@
 
 #if defined(__aarch64__)
 #define _JBLEN 32
+#elif defined(__loongarch__)
+#define _JBLEN 64
 #elif defined(__arm__)
 #define _JBLEN 64
 #elif defined(__i386__)
 #define _JBLEN 10
 #elif defined(__x86_64__)
 #define _JBLEN 11
-#elif __riscv_xlen == 64
-#define _JBLEN 28
 #endif
 
 typedef long sigjmp_buf[_JBLEN + 1];
